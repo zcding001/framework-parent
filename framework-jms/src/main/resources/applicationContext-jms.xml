@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee" xmlns:context="http://www.springframework.org/schema/context" xmlns:jms="http://www.springframework.org/schema/jms" xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+	http://www.springframework.org/schema/jee 
+	http://www.springframework.org/schema/jee/spring-jee-4.3.xsd 
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-4.3.xsd
+	http://www.springframework.org/schema/jms
+	http://www.springframework.org/schema/jms/spring-jms-4.3.xsd">
+
+	<context:component-scan base-package="com.yirun.framework.core" />
+	<context:component-scan base-package="com.yirun.framework.jms" />
+	<context:property-placeholder location="classpath*:*.properties" ignore-unresolvable="true" order="1" file-encoding="UTF-8" />
+
+	<!-- jms 连接池 -->
+	<bean id="jmsConnectionPool" class="org.apache.activemq.pool.PooledConnectionFactory" destroy-method="stop">
+		<property name="connectionFactory" ref="jmsConnectionFactory" />
+		<!-- <constructor-arg name="brokerURL" value="tcp://127.0.0.1:61616"/> -->
+	</bean>
+
+	<!-- 配置JMS连接工厂 -->
+	<bean id="jmsConnectionFactory" class="org.apache.activemq.spring.ActiveMQConnectionFactory">
+		<property name="brokerURL" value="${mq.conn.brokerURL}" />
+		<property name="userName" value="${mq.conn.username}" />
+		<property name="password" value="${mq.conn.password}" />
+		<property name="transportListener">
+			<bean class="com.yirun.framework.jms.listener.JmsTransportListener" />
+		</property>
+		<property name="exceptionListener">
+			<bean class="com.yirun.framework.jms.listener.JmsExceptionListener" />
+		</property>
+		<!-- <property name="trustedPackages" value="com.yirun.framework.jms.model" /> -->
+		<property name="trustAllPackages" value="true" />
+	</bean>
+
+	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<!-- <property name="connectionFactory" ref="jmsConnectionFactory" /> -->
+		<property name="connectionFactory" ref="jmsConnectionPool" />
+	</bean>
+
+	<bean id="jmsService" class="com.yirun.framework.jms.impl.JmsServiceImpl">
+		<property name="jmsTemplate" ref="jmsTemplate" />
+		<property name="connectionFactory" ref="jmsConnectionFactory" />
+	</bean>
+	
+	<!-- 轮询失败消息  -->
+	<bean id="jmsPollingFailMsgServer" class="com.yirun.framework.jms.polling.JmsPollingFailMsgServer" />
+
+	<bean id="defaultJmsMessageHandler" class="com.yirun.framework.jms.handler.DefaultJmsMessageHandler" />
+
+	<!-- 自定义MessageListenerContainer工厂 -->
+	<bean id="custContainerFactory" class="com.yirun.framework.jms.factory.CustContainerFactory" depends-on="propertiesHolder">
+		<property name="connectionFactory" ref="jmsConnectionFactory" />
+		<property name="jmsConnectionPool" ref="jmsConnectionPool" />
+	</bean>
+	
+	<!-- <bean id="asynQueueMsgListener" class="com.yirun.framework.jms.listener.QueueAsynMsgListener">
+		<description>queue消息监听</description>
+		<property name="jmsMessageHandlerFactory" ref="jmsMessageHandlerFactory"/>
+	</bean> 
+
+	<bean id="custQueue" class="com.yirun.framework.jms.destination.CustActiveMQQueue">
+		<description>queue队列</description>
+		<property name="desitions" value="${mq.queue.desitions}" />
+		<property name="receiveDlq" value="false" />
+	</bean>
+
+	<bean id="queueListener" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+		<description>
+			spring queue listener 配置
+		</description>
+		<property name="connectionFactory" ref="jmsConnectionFactory" />
+		<property name="destination" ref="custQueue" />
+		<property name="messageListener" ref="asynQueueMsgListener" />
+		<property name="sessionAcknowledgeMode" value="${mq.queue.session.acknowledge.mode}" />
+		<property name="receiveTimeout" value="100000" />
+		<property name="concurrentConsumers" value="1" />
+		<property name="maxConcurrentConsumers" value="1" />
+		<property name="cacheLevel" value="${mq.queue.cache.level}" />
+	</bean> -->
+
+	
+	<!-- topic消息 -->
+	<!-- <bean id="asynTopicMsgListener" class="com.yirun.framework.jms.listener.TopicAsynMsgListener">
+		<description>topic监听事件</description>
+	</bean> 
+	
+	<bean id="custTopic" class="com.yirun.framework.jms.destination.CustActiveMQTopic">
+		<description>发布订阅</description>
+		<property name="desitions" value="${mq.topic.desitions}" />
+		<property name="receiveDlq" value="false" />
+	</bean> -->
+	
+	<!-- spring queue listener 配置 -->
+	<!-- 
+		<property name="subscriptionDurable" value="true"/>
+        <property name="pubSubDomain" value="true"/>
+        <property name="clientId" value="${mq.topic.listener.clientId}" />
+        <property name="durableSubscriptionName" value="${mq.topic.desition.durable.subscriber.name}"/>
+	 -->
+	<!-- <bean id="topicListener" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+		<description>
+			pubSubDomain : 发布订阅模式标志
+			subscriptionDurable : 持久性订阅标志
+			clientId : 注册客户端id
+			durableSubscriptionName : 订阅者名称
+		</description>
+		<property name="connectionFactory" ref="jmsConnectionFactory" />
+		<property name="destination" ref="custTopic" />
+		<property name="messageListener" ref="asynTopicMsgListener" />
+		<property name="sessionAcknowledgeMode" value="${mq.queue.session.acknowledge.mode}" />
+		<property name="receiveTimeout" value="100000" />
+		<property name="concurrentConsumers" value="1" />
+		<property name="maxConcurrentConsumers" value="1" />
+		<property name="cacheLevel" value="${mq.topic.cache.level}" />
+	</bean> -->
+</beans>

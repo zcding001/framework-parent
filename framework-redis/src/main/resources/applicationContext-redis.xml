@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+	   http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+       http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.3.xsd
+       http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+<!-- 	<bean id="RedisConfig" -->
+<!-- 		class="com.yirun.framework.redis.RedisConfig"> -->
+<!-- 		<property name="redis_ip" ref="${redis.ip}" /> -->
+<!-- 		<property name="redis_port" ref="${redis.port}" /> -->
+<!-- 		<property name="redis_password" ref="${redis.password}" /> -->
+<!-- 		<property name="redis_pool_maxActive" ref="${redis.pool.maxActive}" /> -->
+<!-- 		<property name="redis_pool_maxIdle" ref="${redis.pool.maxIdle}" /> -->
+<!-- 		<property name="redis_pool_maxTotal" ref="${redis.pool.maxTotal}" /> -->
+<!-- 		<property name="redis_pool_maxWait" ref="${redis.pool.maxWait}" /> -->
+<!-- 		<property name="redis_pool_testOnBorrow" ref="${redis.pool.testOnBorrow}" /> -->
+<!-- 		<property name="redis_pool_testOnReturn" ref="${redis.pool.testOnReturn}" /> -->
+<!-- 		<property name="redis_lock_timeout" ref="${redis.lock.timeout}" /> -->
+<!-- 	</bean> -->
+<!-- 	 <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"> -->
+<!--         <property name="locations"> -->
+<!--             <value>file:application-redis.properties</value> -->
+<!--         </property> -->
+<!--     </bean> -->
+	 <bean id="PropertiesHolder" class="com.yirun.framework.core.utils.PropertiesHolder"></bean>
+</beans>
