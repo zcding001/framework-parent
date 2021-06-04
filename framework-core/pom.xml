@@ -23,7 +23,7 @@
 		<jackson.fasterxml.version>2.8.4</jackson.fasterxml.version>
 		<javamail.version>1.4.7</javamail.version>
 		<httpcomponents.version>4.4.3</httpcomponents.version>
-		<httpclient.version>4.5.1</httpclient.version>
+		<httpclient.version>4.5.13</httpclient.version>
 		<jcraft.version>0.1.50</jcraft.version>
 		<poi.version>3.16</poi.version>
 	</properties>
