@@ -25,7 +25,7 @@
 		<httpcomponents.version>4.4.3</httpcomponents.version>
 		<httpclient.version>4.5.1</httpclient.version>
 		<jcraft.version>0.1.50</jcraft.version>
-		<poi.version>3.16</poi.version>
+		<poi.version>4.1.1</poi.version>
 	</properties>
 	
 	<dependencies>
